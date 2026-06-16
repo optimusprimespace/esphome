@@ -11,8 +11,7 @@ namespace esphome::ultrasonic {
 struct UltrasonicSensorStore {
   static void gpio_intr(UltrasonicSensorStore *arg);
 
-  ISRInternalGPIOPin echo_pin_isr;
-  volatile uint32_t wait_start_us{0};
+  volatile uint32_t measurement_start_us{0};
   volatile uint32_t echo_start_us{0};
   volatile uint32_t echo_end_us{0};
   volatile bool echo_start{false};
@@ -28,8 +27,6 @@ class UltrasonicSensorComponent : public sensor::Sensor, public PollingComponent
   void loop() override;
   void dump_config() override;
   void update() override;
-
-  float get_setup_priority() const override { return setup_priority::DATA; }
 
   /// Set the maximum time in µs to wait for the echo to return
   void set_timeout_us(uint32_t timeout_us) { this->timeout_us_ = timeout_us; }
